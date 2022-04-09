@@ -43,9 +43,8 @@ public class ChessGameRepository implements GameRepository {
 	@Override
 	public void updateGame(ChessGame game, Command command) {
 		chessGameDao.updateState(game);
-		try {
+		if (command.isMove()) {
 			updatePositionOfPiece(game, command.getFromPosition(), command.getToPosition());
-		} catch (IllegalStateException ignored) {
 		}
 	}
 

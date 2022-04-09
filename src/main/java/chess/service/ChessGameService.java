@@ -3,7 +3,9 @@ package chess.service;
 import java.util.List;
 
 import chess.domain.ChessGame;
+import chess.domain.board.BoardInitializer;
 import chess.domain.command.Command;
+import chess.domain.state.Ready;
 import chess.repository.GameRepository;
 
 public class ChessGameService {
@@ -16,8 +18,10 @@ public class ChessGameService {
 		this.gameRepository = gameRepository;
 	}
 
-	public void saveGame(ChessGame game) {
-		gameRepository.save(game);
+	public ChessGame createGame(String name) {
+		ChessGame chessGame = new ChessGame(name, new Ready(BoardInitializer.generate()));
+		gameRepository.save(chessGame);
+		return chessGame;
 	}
 
 	public ChessGame findGame(String name) {

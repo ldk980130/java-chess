@@ -8,10 +8,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import chess.domain.ChessGame;
-import chess.domain.board.BoardInitializer;
 import chess.domain.command.Command;
 import chess.domain.command.Start;
-import chess.domain.state.Ready;
 import chess.repository.ChessGameRepository;
 import chess.service.ChessGameService;
 import chess.converter.RequestToCommandConverter;
@@ -74,9 +72,8 @@ public class WebController {
 	private void enterNewGame(Map<String, Object> model) {
 		post(NEW_GAME_URL, (request, response) -> {
 			Map<String, String> name = RequestToMapConverter.ofSingle(request);
-			ChessGame game = new ChessGame(name.get(NAME), new Ready(BoardInitializer.generate()));
 
-			gameService.saveGame(game);
+			ChessGame game = gameService.createGame(name.get(NAME));
 
 			fillModelEmptyBoard(model, game);
 			return render(model, GAME_PAGE);
